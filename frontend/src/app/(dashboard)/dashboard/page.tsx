@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-context";
 import { api } from "@/lib/api";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoleGate } from "@/components/role-gate";
-import { Calendar, Clock, Users, AlertTriangle } from "lucide-react";
-import type { Schedule, Shift, TimeOffRequest, Notification as NotificationType } from "@/lib/types";
+import { Calendar, Clock, Users } from "lucide-react";
+import type { Schedule, Shift } from "@/lib/types";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -35,11 +35,9 @@ export default function DashboardPage() {
 
 function StudentDashboard() {
   const [shifts, setShifts] = useState<Shift[]>([]);
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
 
   useEffect(() => {
     api.shifts.getMine().then((d) => setShifts(d as Shift[])).catch(() => {});
-    api.notifications.list().then((d) => setNotifications(d as NotificationType[])).catch(() => {});
   }, []);
 
   const upcoming = shifts.filter(
@@ -79,38 +77,14 @@ function StudentDashboard() {
           )}
         </CardContent>
       </Card>
-
-      <Card className="md:col-span-3">
-        <CardHeader>
-          <CardTitle className="text-sm font-medium">Recent Notifications</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {notifications.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No notifications</p>
-          ) : (
-            <div className="space-y-2">
-              {notifications.slice(0, 5).map((n) => (
-                <div key={n.id} className={`flex items-start gap-2 rounded-md border p-2 text-sm ${!n.is_read ? "bg-accent/50" : ""}`}>
-                  <div>
-                    <p className="font-medium">{n.title}</p>
-                    <p className="text-muted-foreground">{n.message}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
     </div>
   );
 }
 
 function SupervisorDashboard() {
-  const [pendingTimeOff, setPendingTimeOff] = useState<TimeOffRequest[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
 
   useEffect(() => {
-    api.timeOff.getPending().then((d) => setPendingTimeOff(d as TimeOffRequest[])).catch(() => {});
     api.schedules.list().then((d) => setSchedules(d as Schedule[])).catch(() => {});
   }, []);
 
@@ -118,7 +92,7 @@ function SupervisorDashboard() {
   const drafts = schedules.filter((s) => s.status === "draft");
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-sm font-medium">Published Schedules</CardTitle>
@@ -135,16 +109,6 @@ function SupervisorDashboard() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{drafts.length}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Pending Time Off</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{pendingTimeOff.length}</div>
-          <p className="text-xs text-muted-foreground">requests awaiting review</p>
         </CardContent>
       </Card>
       <Card>

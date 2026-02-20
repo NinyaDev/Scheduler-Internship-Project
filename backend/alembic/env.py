@@ -9,14 +9,10 @@ from app.database import Base
 # Import all models so they register with Base.metadata
 from app.models.user import User
 from app.models.location import Location
-from app.models.operating_hours import OperatingHours
 from app.models.availability import Availability
 from app.models.schedule import Schedule
 from app.models.shift import Shift
-from app.models.time_off_request import TimeOffRequest
-from app.models.shift_swap import ShiftSwap
 from app.models.holiday import Holiday
-from app.models.notification import Notification
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)

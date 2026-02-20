@@ -6,14 +6,10 @@ from app.models.location import Location
 from app.models.user import User, UserRole
 
 # Import all models to ensure tables are created
-from app.models.operating_hours import OperatingHours
 from app.models.availability import Availability
 from app.models.schedule import Schedule
 from app.models.shift import Shift
-from app.models.time_off_request import TimeOffRequest
-from app.models.shift_swap import ShiftSwap
 from app.models.holiday import Holiday
-from app.models.notification import Notification
 
 
 def seed():

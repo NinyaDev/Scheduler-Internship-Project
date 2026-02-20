@@ -8,11 +8,8 @@ import {
   Home,
   LogOut,
   MapPin,
-  CalendarOff,
-  ArrowLeftRight,
   Users,
   CalendarDays,
-  Bell,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
