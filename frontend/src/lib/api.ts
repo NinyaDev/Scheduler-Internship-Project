@@ -91,27 +91,6 @@ export const api = {
     delete: (id: number) => apiFetch(`/api/shifts/${id}`, { method: "DELETE" }),
   },
 
-  timeOff: {
-    create: (data: Record<string, unknown>) =>
-      apiFetch("/api/time-off/", { method: "POST", body: JSON.stringify(data) }),
-    getMine: () => apiFetch("/api/time-off/my"),
-    getPending: () => apiFetch("/api/time-off/pending"),
-    getAll: () => apiFetch("/api/time-off/"),
-    review: (id: number, data: { status: string }) =>
-      apiFetch(`/api/time-off/${id}/review`, { method: "PATCH", body: JSON.stringify(data) }),
-  },
-
-  shiftSwaps: {
-    propose: (data: Record<string, unknown>) =>
-      apiFetch("/api/shift-swaps/", { method: "POST", body: JSON.stringify(data) }),
-    getMine: () => apiFetch("/api/shift-swaps/my"),
-    getPending: () => apiFetch("/api/shift-swaps/pending"),
-    respond: (id: number, data: { accept: boolean; target_shift_id?: number }) =>
-      apiFetch(`/api/shift-swaps/${id}/respond`, { method: "PATCH", body: JSON.stringify(data) }),
-    review: (id: number, data: { approve: boolean }) =>
-      apiFetch(`/api/shift-swaps/${id}/review`, { method: "PATCH", body: JSON.stringify(data) }),
-  },
-
   holidays: {
     list: () => apiFetch("/api/holidays/"),
     create: (data: Record<string, unknown>) =>
@@ -119,13 +98,6 @@ export const api = {
     update: (id: number, data: Record<string, unknown>) =>
       apiFetch(`/api/holidays/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
     delete: (id: number) => apiFetch(`/api/holidays/${id}`, { method: "DELETE" }),
-  },
-
-  notifications: {
-    list: () => apiFetch("/api/notifications/"),
-    unreadCount: () => apiFetch<{ count: number }>("/api/notifications/unread-count"),
-    markRead: (id: number) => apiFetch(`/api/notifications/${id}/read`, { method: "PATCH" }),
-    markAllRead: () => apiFetch("/api/notifications/read-all", { method: "PATCH" }),
   },
 
   export: {

@@ -2,17 +2,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
+import app.models.user  # noqa: F401
+import app.models.location  # noqa: F401
+import app.models.availability  # noqa: F401
+import app.models.schedule  # noqa: F401
+import app.models.shift  # noqa: F401
+import app.models.holiday  # noqa: F401
 from app.routers import (
     auth,
     availability,
     export,
     holidays,
     locations,
-    notifications,
     schedules,
-    shift_swaps,
     shifts,
-    time_off,
     users,
 )
 
@@ -32,10 +35,7 @@ app.include_router(locations.router)
 app.include_router(availability.router)
 app.include_router(schedules.router)
 app.include_router(shifts.router)
-app.include_router(time_off.router)
-app.include_router(shift_swaps.router)
 app.include_router(holidays.router)
-app.include_router(notifications.router)
 app.include_router(export.router)
 
 

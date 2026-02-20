@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { Sidebar } from "@/components/sidebar";
-import { NotificationBell } from "@/components/notification-bell";
 import Link from "next/link";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +35,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {user.role === "supervisor" ? "Supervisor" : "Student"} Portal
           </Link>
           <Link href="/dashboard" className="p-2 hover:bg-accent rounded-md">
-            <NotificationBell />
           </Link>
         </header>
         <main className="flex-1 overflow-y-auto p-6">{children}</main>

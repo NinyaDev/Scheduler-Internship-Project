@@ -75,54 +75,11 @@ export interface GenerateScheduleResponse {
   warnings: ScheduleWarning[];
 }
 
-export type RequestType = "time_off" | "sick_day";
-export type RequestStatus = "pending" | "approved" | "denied";
-
-export interface TimeOffRequest {
-  id: number;
-  user_id: number;
-  user_name?: string;
-  request_type: RequestType;
-  start_date: string;
-  end_date: string;
-  reason: string | null;
-  status: RequestStatus;
-  reviewed_by: number | null;
-  created_at: string;
-}
-
-export type SwapStatus = "proposed" | "accepted" | "approved" | "denied" | "cancelled";
-
-export interface ShiftSwap {
-  id: number;
-  requester_id: number;
-  requester_name?: string;
-  target_id: number;
-  target_name?: string;
-  requester_shift_id: number;
-  target_shift_id: number | null;
-  reason: string | null;
-  status: SwapStatus;
-  reviewed_by: number | null;
-  created_at: string;
-}
-
 export interface Holiday {
   id: number;
   name: string;
   start_date: string;
   end_date: string;
   created_by: number | null;
-  created_at: string;
-}
-
-export interface Notification {
-  id: number;
-  user_id: number;
-  title: string;
-  message: string;
-  type: string;
-  is_read: boolean;
-  link: string | null;
   created_at: string;
 }

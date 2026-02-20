@@ -27,5 +27,3 @@ class User(Base):
 
     availability = relationship("Availability", back_populates="user", cascade="all, delete-orphan")
     shifts = relationship("Shift", back_populates="user", cascade="all, delete-orphan")
-    time_off_requests = relationship("TimeOffRequest", back_populates="user", foreign_keys="TimeOffRequest.user_id", cascade="all, delete-orphan")
-    notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")

@@ -21,8 +21,6 @@ const studentLinks = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/schedule", label: "Schedule", icon: Calendar },
   { href: "/availability", label: "Availability", icon: Clock },
-  { href: "/time-off", label: "Time Off", icon: CalendarOff },
-  { href: "/shift-swap", label: "Shift Swaps", icon: ArrowLeftRight },
 ];
 
 const supervisorLinks = [
@@ -31,8 +29,6 @@ const supervisorLinks = [
   { href: "/availability", label: "Availability", icon: Clock },
   { href: "/locations", label: "Locations", icon: MapPin },
   { href: "/holidays", label: "Holidays", icon: CalendarDays },
-  { href: "/time-off", label: "Time Off", icon: CalendarOff },
-  { href: "/shift-swap", label: "Shift Swaps", icon: ArrowLeftRight },
   { href: "/admin/users", label: "Users", icon: Users },
 ];
 

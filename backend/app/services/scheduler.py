@@ -5,7 +5,7 @@ Improvements over prototype:
 1. Variable shift blocks (2-5 hour contiguous blocks instead of 1-hour slots)
 2. Scoring function: fairness ratio, day spreading, shift length, location continuity
 3. Priority-based location filling (highest priority first)
-4. Holiday + time-off aware
+4. Holiday aware
 5. Warnings for understaffed slots
 """
 
@@ -19,7 +19,6 @@ from app.models.holiday import Holiday
 from app.models.location import Location
 from app.models.schedule import Schedule, ScheduleStatus
 from app.models.shift import Shift
-from app.models.time_off_request import RequestStatus, TimeOffRequest
 from app.models.user import User, UserRole
 from app.schemas.schedule import ScheduleWarning
 
@@ -49,7 +48,6 @@ def generate_schedule(
         .all()
     )
     holidays = _get_holidays_for_week(db, week_start)
-    approved_time_off = _get_approved_time_off(db, week_start)
 
     # Build availability lookup: user_id -> day -> set of available hours
     avail_map = _build_availability_map(db, [s.id for s in students])
@@ -95,7 +93,6 @@ def generate_schedule(
                 actual_date=actual,
                 avail_map=avail_map,
                 student_state=student_state,
-                approved_time_off=approved_time_off,
                 warnings=warnings,
             )
             all_shifts.extend(assigned_for_slot)
@@ -113,7 +110,6 @@ def _assign_location_day(
     actual_date: date,
     avail_map: dict[int, dict[str, set[int]]],
     student_state: dict[int, dict],
-    approved_time_off: dict[int, set[date]],
     warnings: list[ScheduleWarning],
 ) -> list[Shift]:
     """Assign shifts for a single location on a single day."""
@@ -127,10 +123,6 @@ def _assign_location_day(
         best_block = None
 
         for uid, state in student_state.items():
-            # Skip if student has approved time-off on this date
-            if actual_date in approved_time_off.get(uid, set()):
-                continue
-
             # Get available hours for this student on this day
             available_hours = avail_map.get(uid, {}).get(day, set())
             if not available_hours:
@@ -304,29 +296,5 @@ def _get_holidays_for_week(db: Session, week_start: date) -> set[date]:
         end = min(h.end_date, week_end)
         while d <= end:
             result.add(d)
-            d += timedelta(days=1)
-    return result
-
-
-def _get_approved_time_off(
-    db: Session, week_start: date
-) -> dict[int, set[date]]:
-    """Return map of user_id -> set of dates they have approved time off."""
-    week_end = week_start + timedelta(days=4)
-    requests = (
-        db.query(TimeOffRequest)
-        .filter(
-            TimeOffRequest.status == RequestStatus.approved,
-            TimeOffRequest.start_date <= week_end,
-            TimeOffRequest.end_date >= week_start,
-        )
-        .all()
-    )
-    result: dict[int, set[date]] = defaultdict(set)
-    for r in requests:
-        d = max(r.start_date, week_start)
-        end = min(r.end_date, week_end)
-        while d <= end:
-            result[r.user_id].add(d)
             d += timedelta(days=1)
     return result
