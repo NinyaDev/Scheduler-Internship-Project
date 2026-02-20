@@ -7,7 +7,6 @@ from app.models.user import UserRole
 
 class UserCreate(BaseModel):
     email: EmailStr
-    password: str
     first_name: str
     last_name: str
     role: UserRole = UserRole.student
@@ -31,14 +30,10 @@ class UserOut(BaseModel):
     max_hours_per_week: float
     is_active: bool
     created_at: datetime
+    google_id: str | None = None
+    picture_url: str | None = None
 
     model_config = {"from_attributes": True}
-
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
-
 
 class TokenResponse(BaseModel):
     message: str
